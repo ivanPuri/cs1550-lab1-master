@@ -89,3 +89,15 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int sys_getcount(void){
+  int sysnum = -1;
+
+  if (argint(0, &sysnum) == 0){ //getting the args out of tf 
+    return getcount(sysnum);
+  }else{
+    return -1;
+  }
+
+
+}

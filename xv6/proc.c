@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "counthelper.h"
 
 struct {
   struct spinlock lock;
@@ -183,7 +184,7 @@ fork(void)
   int i, pid;
   struct proc *np;
   struct proc *curproc = myproc();
-
+  
   // Allocate process.
   if((np = allocproc()) == 0){
     return -1;
@@ -215,7 +216,8 @@ fork(void)
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
-
+  listinit(np);
+  
   release(&ptable.lock);
 
   return pid;
@@ -530,5 +532,17 @@ procdump(void)
         cprintf(" %p", pc[i]);
     }
     cprintf("\n");
+  }
+}
+
+// Returns the actual count value
+int getcount(int sysnum){
+	if (sysnum <= 22 && sysnum > 0){
+    struct proc* p = myproc();
+
+    return getEntry(p, sysnum); // return value needs changed
+  }else{
+    cprintf("Unrecognised syscall number, %d", sysnum);
+    return -1;
   }
 }

@@ -34,6 +34,13 @@ struct context {
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
+// Struct necessary for syscall 22 (linked list node)
+typedef struct syscallCounter{
+  int syscall_number;
+  int count;
+  struct syscallCounter* next;
+}syscallCounter;
+
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
@@ -49,7 +56,9 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  syscallCounter* counter_head;
 };
+
 
 // Process memory is laid out contiguously, low addresses first:
 //   text
