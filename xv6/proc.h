@@ -65,3 +65,14 @@ struct proc {
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+// Initialize a process's linked list.
+void listinit(struct proc* p);
+
+// Inserts a new node at the front of a process's list.
+int listinsert(struct proc* p, int syscall_num);
+// Main function called my other syscalls in proc.c
+void addEntry(struct proc* p, int sysnum);
+// getting a count value
+int getEntry(struct proc* p, int sysnum);
+
+
